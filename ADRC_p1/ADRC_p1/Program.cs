@@ -22,9 +22,11 @@ namespace ADRC_p1
         {
             char option;
 
+            ptree.PrefixTree();
+
             do
             {
-                ptree.PrefixTree();
+
                 ShowMenu();
                 option = Console.ReadKey().KeyChar;
                 Console.WriteLine(Environment.NewLine);

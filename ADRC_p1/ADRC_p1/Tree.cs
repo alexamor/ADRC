@@ -13,6 +13,11 @@ namespace ADRC_p1
         Leaf right;
         int nextHop = -1;
 
+        public Leaf()
+        {
+
+        }
+        
         public Leaf(int nextHop)
         {
             this.nextHop = nextHop;
@@ -58,22 +63,25 @@ namespace ADRC_p1
             // Criar o caminho do ficheiro de texto que representa a árvore
             string file = Path.Combine(Directory.GetCurrentDirectory(), "tree1.txt");
 
-            // Abre o ficheiro, lê todas as linhas e guarda 
+            // Abre o ficheiro, lê todas as linhas e guarda a linha num vetor de strings
             var lines = File.ReadLines(file);
 
+            // Cria a raiz da árvore
+            root = new Leaf();
+
+            // Lê cada linha do ficheiro e insere cada prefixo na árvore
             foreach (var line in lines)
             {
+                // Separa a linha do ficheiro em prefixo e next hop
                 string[] node = line.Split(' ');
-                if (node[0] == "e")
-                {
-                    Console.WriteLine("default found!");
-                    root = new Leaf(Int32.Parse(node[1]));
-                    Console.WriteLine("next hop:" + root.GetNextHop());
-                }
-                else
-                {
-                    InsertLeaf(node[0], Int32.Parse(node[1]));
-                }
+                if (node[0] == "")
+                    break;
+                Console.WriteLine(node[0]);
+                // Insere cada folha na árvore
+                InsertLeaf(node[0], Int32.Parse(node[1]));
+
+
+                Console.WriteLine("Did: " + node[0]);
 
             }
 
@@ -106,6 +114,17 @@ namespace ADRC_p1
 
         public void InsertLeaf(string prefix, int nextHop)
         {
+            // Caso o prefixo seja o default, insere na raiz
+            if (prefix[0] == 'e')
+            {
+                Console.WriteLine("default found!");
+                root.SetNextHop(nextHop);
+                Console.WriteLine("next hop:" + root.GetNextHop());
+            }
+            else
+            {
+                
+            }
 
         }
     }
