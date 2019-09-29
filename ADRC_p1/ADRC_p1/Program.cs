@@ -24,6 +24,7 @@ namespace ADRC_p1
 
             do
             {
+                ptree.PrefixTree();
                 ShowMenu();
                 option = Console.ReadKey().KeyChar;
                 Console.WriteLine(Environment.NewLine);
