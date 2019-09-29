@@ -1,0 +1,7 @@
+D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\bin\Debug\ADRC_p1.exe.config
+D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\bin\Debug\ADRC_p1.exe
+D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\bin\Debug\ADRC_p1.pdb
+D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.csprojAssemblyReference.cache
+D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.csproj.CoreCompileInputs.cache
+D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.exe
+D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.pdb
