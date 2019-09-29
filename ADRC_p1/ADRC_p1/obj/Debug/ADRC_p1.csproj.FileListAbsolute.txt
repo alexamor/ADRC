@@ -5,3 +5,9 @@ D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.csprojAssemblyReference.ca
 D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.csproj.CoreCompileInputs.cache
 D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.exe
 D:\Outros\Adrc\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.pdb
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\bin\Debug\ADRC_p1.exe.config
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\bin\Debug\ADRC_p1.exe
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\bin\Debug\ADRC_p1.pdb
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.csprojAssemblyReference.cache
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.exe
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\obj\Debug\ADRC_p1.pdb
