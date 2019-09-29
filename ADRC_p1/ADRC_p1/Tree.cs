@@ -89,7 +89,47 @@ namespace ADRC_p1
 
         public void PrintTable()
         {
-            Console.WriteLine("Print");
+            //Console.WriteLine("Print");
+
+            PrintLeaf(root, "");
+        }
+
+        public void PrintLeaf(Leaf curleaf, string branches)
+        {
+            //Console.WriteLine("PrintLeaf");
+
+            //Adicionar ramo da direita caso este nó não seja dos mais à esquerda
+            if (branches.Length > 0)
+                Console.Write("-");
+            
+            //Escrever o next hop do atual nó
+            if(curleaf.GetNextHop() != -1)
+                Console.Write(curleaf.GetNextHop());
+            else
+                Console.Write(" ");
+
+            //Adicionar ramos da esquerda
+            if (curleaf.GetLeft() != null)
+                branches += "| ";
+            else
+                branches += "  ";
+
+            //Verificar se ainda se pode deslocar para a direita
+            if (curleaf.GetRight() != null)
+                PrintLeaf(curleaf.GetRight(), branches);
+            else
+            {
+                Console.WriteLine(Environment.NewLine + branches);
+
+                branches = branches.Substring(0, branches.Length - 2);
+
+                Console.Write(branches);
+            }
+
+            //Verificar se ainda se pode deslocar para a esquerda
+            if (curleaf.GetLeft() != null)
+                PrintLeaf(curleaf.GetLeft(), branches);
+
         }
 
         public void LookUp()
