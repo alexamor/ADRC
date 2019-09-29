@@ -20,6 +20,7 @@ namespace ADRC_p1
 
     public class Tree
     {
+        Leaf root;
         public void PrefixTree()
         {
 
