@@ -163,7 +163,45 @@ namespace ADRC_p1
             }
             else
             {
-                
+                // Verifica que a raiz foi criada. Pode não ter acontecido se se estiver a inserir numa árvore vazia
+                // Ou seja, que foi totalmente apagada
+                if (root == null)
+                    root = new Leaf();
+
+                // Inicializa a variável auxiliar que vai percorrer a árvore à raiz
+                Leaf aux = root;
+
+                // Percorre a árvore para inserir o prefixo
+                for (int i=0; i < prefix.Length; i++)
+                {
+                    if (prefix[i] == '1')
+                    {
+                        if(aux.GetRight() == null)
+                        {
+                            aux.SetRight(new Leaf());
+                        }
+
+                        aux = aux.GetRight();
+                    }
+                    else if (prefix[i] == '0')
+                    {
+                        if(aux.GetLeft() == null)
+                        {
+                            aux.SetLeft(new Leaf());
+                        }
+
+                        aux = aux.GetLeft();
+                    }
+                    else
+                    {
+                        Console.WriteLine("There's an error in the prefix you tried to insert. Please fix it by only using the binary numeral system.");
+                        return;
+                    }
+
+                }
+
+                aux.SetNextHop(nextHop);
+
             }
 
         }
