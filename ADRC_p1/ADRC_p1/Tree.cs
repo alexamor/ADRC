@@ -89,24 +89,23 @@ namespace ADRC_p1
 
         public void PrintTable()
         {
-            //Console.WriteLine("Print");
-
-            PrintLeaf(root, "");
+            PrintLeaf(root, "", false);
+            Console.WriteLine(Environment.NewLine);
         }
 
-        public void PrintLeaf(Leaf curleaf, string branches)
+        public void PrintLeaf(Leaf curleaf, string branches, bool left)
         {
             //Console.WriteLine("PrintLeaf");
 
             //Adicionar ramo da direita caso este nó não seja dos mais à esquerda
-            if (branches.Length > 0)
+            if (left)
                 Console.Write("-");
             
             //Escrever o next hop do atual nó
             if(curleaf.GetNextHop() != -1)
                 Console.Write(curleaf.GetNextHop());
             else
-                Console.Write(" ");
+                Console.Write("o");
 
             //Adicionar ramos da esquerda
             if (curleaf.GetLeft() != null)
@@ -116,20 +115,21 @@ namespace ADRC_p1
 
             //Verificar se ainda se pode deslocar para a direita
             if (curleaf.GetRight() != null)
-                PrintLeaf(curleaf.GetRight(), branches);
-            else
+            {
+                PrintLeaf(curleaf.GetRight(), branches, true);
+            }
+
+            //Verificar se ainda se pode deslocar para a esquerda
+            if (curleaf.GetLeft() != null)
             {
                 Console.WriteLine(Environment.NewLine + branches);
 
                 branches = branches.Substring(0, branches.Length - 2);
 
                 Console.Write(branches);
+
+                PrintLeaf(curleaf.GetLeft(), branches, false);
             }
-
-            //Verificar se ainda se pode deslocar para a esquerda
-            if (curleaf.GetLeft() != null)
-                PrintLeaf(curleaf.GetLeft(), branches);
-
         }
 
         public void LookUp()
