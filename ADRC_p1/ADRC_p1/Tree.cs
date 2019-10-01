@@ -76,12 +76,11 @@ namespace ADRC_p1
                 string[] node = line.Split(' ');
                 if (node[0] == "")
                     break;
-                Console.WriteLine(node[0]);
+
                 // Insere cada folha na árvore
                 InsertLeaf(node[0], Int32.Parse(node[1]));
 
 
-                Console.WriteLine("Did: " + node[0]);
 
             }
 
@@ -134,11 +133,62 @@ namespace ADRC_p1
 
         public void LookUp()
         {
-            Console.WriteLine("LookUp");
+            Console.WriteLine("Which address do you want to look up?");
+            string address = Console.ReadLine();
+
+            if(address.Length > 16)
+            {
+                Console.WriteLine("The address you provided is not valid.");
+            }
+
+            if(root == null)
+            {
+                Console.WriteLine("There is no tree. Please provide a file with a prefix table or insert prefixes.");
+                return;
+            }
+
+            Leaf aux = root;
+            int nextHop = aux.GetNextHop();
+
+            for(int i = 0; i < address.Length; i++)
+            {
+                if(address[i] == '0')
+                {
+                    if (aux.GetLeft() == null)
+                    {
+                        Console.WriteLine("The next hop is " + nextHop);
+                        return;
+                    }
+
+
+                    aux = aux.GetLeft();
+
+                }
+                else
+                {
+                    if(aux.GetRight() == null)
+                    {
+                        Console.WriteLine("The next hop is " + nextHop);
+                        return;
+                    }
+
+                    aux = aux.GetRight();
+                }
+
+
+                if (aux.GetNextHop() != -1)
+                    nextHop = aux.GetNextHop();
+
+                //Console.WriteLine("NEXT HOP:" + nextHop);
+            }
+
         }
 
         public void InsertPrefix()
         {
+            Console.WriteLine("Please input the prefix and next hop you want to insert in the following format: input nexthop");
+            string[] message = Console.ReadLine().Split(' ');
+            InsertLeaf(message[0], Int32.Parse(message[1]));
 
         }
 
@@ -209,9 +259,7 @@ namespace ADRC_p1
             // Caso o prefixo seja o default, insere na raiz
             if (prefix[0] == 'e')
             {
-                Console.WriteLine("default found!");
                 root.SetNextHop(nextHop);
-                Console.WriteLine("next hop:" + root.GetNextHop());
             }
             else
             {
