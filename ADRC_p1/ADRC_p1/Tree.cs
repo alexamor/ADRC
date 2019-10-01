@@ -251,6 +251,59 @@ namespace ADRC_p1
 
         public void CompressTree()
         {
+            ORTCIter(root, -1);
+        }
+
+        public List<int> ORTCIter(Leaf curLeaf, int nextHop)
+        {
+            List<int> leftVal, rightVal; 
+            
+            //Atualizar valor do next hop a propagar
+            if (curLeaf.GetNextHop() != -1)
+                nextHop = curLeaf.GetNextHop();
+
+            //Verificar se nos encontramos num nó só com um filho e adicionar um caso seja esse o caso
+            if(curLeaf.GetLeft() == null && curLeaf.GetRight() != null)
+            {
+                curLeaf.SetLeft(new Leaf(nextHop));
+            }
+            else if(curLeaf.GetLeft() != null && curLeaf.GetRight() == null)
+            {
+                curLeaf.SetRight(new Leaf(nextHop));
+            }
+
+            if (curLeaf.GetLeft() != null && curLeaf.GetRight() != null)
+            {
+                List<int> intersect = new List<int>();
+                
+                leftVal = ORTCIter(curLeaf.GetLeft(), nextHop);
+                rightVal = ORTCIter(curLeaf.GetRight(), nextHop);
+
+                //caso haja interseçao, manter a interseçao, caso nao manter a união
+                intersect = leftVal.Intersect<int>(rightVal).ToList<int>();
+
+                if (intersect.Count == 0)
+                    intersect = leftVal.Union<int>(rightVal).ToList<int>();
+
+                //Verificar se toda a lista contenha o mesmo nexthop, caso sim pode-se truncar por aqui
+                //facilmente verificavel caso so haja 2 valores e ambos sejam iguais
+                if(intersect.Count == 2 && intersect[0] == intersect[1])
+                {
+                    curLeaf.SetNextHop(intersect[0]);
+                    curLeaf.SetLeft(null);
+                    curLeaf.SetRight(null);
+                }
+
+                return intersect;
+            }
+            else
+            {
+                List<int> newList = new List<int>();
+
+                newList.Add(nextHop);
+
+                return newList;
+            }
 
         }
 
