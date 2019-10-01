@@ -358,5 +358,34 @@ namespace ADRC_p1
             }
 
         }
+
+        public bool DeleteDefault(Leaf curLeaf, int newDefault)
+        {
+            bool delete;
+            // Inicializar a variável que vai percorrer a árvore à raiz
+            if (curLeaf.GetNextHop() == newDefault)
+                return true;
+
+            if(curLeaf.GetLeft() != null)
+            {
+                delete = DeleteDefault(curLeaf.GetLeft(), newDefault);
+                // O garbage collector vai apagar os nós seguintes ao pôr a raíz de cada sub-árvore a null
+                if(delete)
+                    curLeaf.SetLeft(null);
+            }
+            
+            if(curLeaf.GetRight() != null)
+            {
+                delete = DeleteDefault(curLeaf.GetRight(), newDefault);
+                if (delete)
+                    curLeaf.SetRight(null);
+                        
+            }
+
+            return false;
+
+
+            
+        }
     }
 }
