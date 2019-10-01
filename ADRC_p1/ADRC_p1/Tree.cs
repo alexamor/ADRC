@@ -144,7 +144,59 @@ namespace ADRC_p1
 
         public void DeletePrefix()
         {
+            Console.WriteLine("Prefix to delete:");
 
+            //caso o delete se propague até aqui é porque a root em si também será eliminada
+            if (DeleteLeaf(root, Console.ReadLine()) == true)
+                root = null;
+        }
+
+        //Retorna positivo caso seja uma folha (sem filhos) para avisar para apagar os nós sem next hop acima
+        public bool DeleteLeaf(Leaf curleaf, string prefix)
+        {
+            bool delete = false;
+
+            //Verificar para onde seguir só caso ainda não ter atingindo o destino
+            if (prefix.Length > 0)
+            {
+                char next = prefix[0];
+
+                prefix = prefix.Substring(1);
+            
+                if(next == '0')
+                {
+                    delete = DeleteLeaf(curleaf.GetLeft(), prefix);
+                    
+                    if(delete)
+                        curleaf.SetLeft(null);
+
+                }
+                else if(next == '1')
+                {
+                    delete = DeleteLeaf(curleaf.GetRight(), prefix);
+                    
+                    if(delete)
+                        curleaf.SetRight(null);
+                }
+
+                //Cancelar delete progressivo caso se tenha atingido um nó a meio com next hop
+                if (curleaf.GetNextHop() != -1 || curleaf.GetLeft() != null || curleaf.GetRight() != null)
+                    delete = false;
+            }
+            else
+            {
+                //Só pedir para apagar nós sem next hop anteriores caso esta seja uma folha
+                if(curleaf.GetLeft() == null && curleaf.GetRight() == null)
+                {
+                    delete = true;
+                }
+                else
+                {
+                    curleaf.SetNextHop(-1);
+                }
+            }
+
+            return delete;    
         }
 
         public void CompressTree()
