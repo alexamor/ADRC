@@ -61,7 +61,7 @@ namespace ADRC_p1
         {
 
             // Criar o caminho do ficheiro de texto que representa a árvore
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "tree1.txt");
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "tree2.txt");
 
             // Abre o ficheiro, lê todas as linhas e guarda a linha num vetor de strings
             var lines = File.ReadLines(file);
@@ -252,6 +252,12 @@ namespace ADRC_p1
         public void CompressTree()
         {
             ORTCIter(root, -1);
+
+            //Apagar nós redundantes
+            DeleteDefault(root.GetLeft(), root.GetNextHop());
+            DeleteDefault(root.GetRight(), root.GetNextHop());
+
+            Console.WriteLine(Environment.NewLine + "Tree Compressed");
         }
 
         public List<int> ORTCIter(Leaf curLeaf, int nextHop)
@@ -279,21 +285,25 @@ namespace ADRC_p1
                 leftVal = ORTCIter(curLeaf.GetLeft(), nextHop);
                 rightVal = ORTCIter(curLeaf.GetRight(), nextHop);
 
-                //caso haja interseçao, manter a interseçao, caso nao manter a união
-                intersect = leftVal.Intersect<int>(rightVal).ToList<int>();
-
-                if (intersect.Count == 0)
-                    intersect = leftVal.Union<int>(rightVal).ToList<int>();
-
                 //Verificar se toda a lista contenha o mesmo nexthop, caso sim pode-se truncar por aqui
-                //facilmente verificavel caso so haja 2 valores e ambos sejam iguais
-                if(intersect.Count == 2 && intersect[0] == intersect[1])
+                //facilmente verificavel caso ambos só transmitão um valor e este seja igual
+                if (leftVal[0] == rightVal[0] && leftVal.Count == 1 && rightVal.Count == 1)
                 {
-                    curLeaf.SetNextHop(intersect[0]);
+                    curLeaf.SetNextHop(leftVal[0]);
                     curLeaf.SetLeft(null);
                     curLeaf.SetRight(null);
                 }
 
+                //caso haja interseçao, manter a interseçao, caso nao manter a união
+                intersect = leftVal.Intersect<int>(rightVal).ToList<int>();
+                
+                //Mudar valor do prefixo e caso esse seja o caso para um dos valores da interseçao
+                if (curLeaf == root && intersect.Count != 0)
+                    curLeaf.SetNextHop(intersect[0]);
+
+                if (intersect.Count == 0)
+                    intersect = leftVal.Union<int>(rightVal).ToList<int>();
+                
                 return intersect;
             }
             else
@@ -362,6 +372,10 @@ namespace ADRC_p1
         public bool DeleteDefault(Leaf curLeaf, int newDefault)
         {
             bool delete;
+
+            if (curLeaf == null)
+                return false;
+
             // Inicializar a variável que vai percorrer a árvore à raiz
             if (curLeaf.GetNextHop() == newDefault)
                 return true;
