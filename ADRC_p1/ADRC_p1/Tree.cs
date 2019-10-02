@@ -7,11 +7,13 @@ using System.IO;
 
 namespace ADRC_p1
 {
+    // Class que representa cada nó da árvore
     public class Leaf
     {
-        Leaf left;
-        Leaf right;
-        int nextHop = -1;
+        Leaf left; // Filho da esquerda ou seja, '0'
+        Leaf right; // Filho da direita, ou seja, '1'
+        int nextHop = -1; // Next Hop
+        public List<int> possibleNextHops;
 
         public Leaf()
         {
@@ -23,6 +25,7 @@ namespace ADRC_p1
             this.nextHop = nextHop;
         }
 
+        // Getters e Setters para os atributos privados
         public int GetNextHop()
         {
             return nextHop;
@@ -61,7 +64,7 @@ namespace ADRC_p1
         {
 
             // Criar o caminho do ficheiro de texto que representa a árvore
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "tree2.txt");
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "tree5.txt");
 
             // Abre o ficheiro, lê todas as linhas e guarda a linha num vetor de strings
             var lines = File.ReadLines(file);
@@ -254,8 +257,12 @@ namespace ADRC_p1
             ORTCIter(root, -1);
 
             //Apagar nós redundantes
-            DeleteDefault(root.GetLeft(), root.GetNextHop());
-            DeleteDefault(root.GetRight(), root.GetNextHop());
+            bool delete = DeleteDefault(root.GetLeft(), root.GetNextHop());
+            /*if (delete)
+                root.SetLeft(null);*/
+            delete = DeleteDefault(root.GetRight(), root.GetNextHop());
+            /*if (delete)
+                root.SetRight(null);*/
 
             Console.WriteLine(Environment.NewLine + "Tree Compressed");
         }
@@ -272,6 +279,7 @@ namespace ADRC_p1
             if(curLeaf.GetLeft() == null && curLeaf.GetRight() != null)
             {
                 curLeaf.SetLeft(new Leaf(nextHop));
+
             }
             else if(curLeaf.GetLeft() != null && curLeaf.GetRight() == null)
             {
@@ -284,6 +292,12 @@ namespace ADRC_p1
                 
                 leftVal = ORTCIter(curLeaf.GetLeft(), nextHop);
                 rightVal = ORTCIter(curLeaf.GetRight(), nextHop);
+
+                // Caso não seja uma folha, é necessário eliminar o Next Hop do nó atual
+                curLeaf.SetNextHop(-1);
+                
+
+
 
                 //Verificar se toda a lista contenha o mesmo nexthop, caso sim pode-se truncar por aqui
                 //facilmente verificavel caso ambos só transmitão um valor e este seja igual
@@ -298,21 +312,53 @@ namespace ADRC_p1
                 intersect = leftVal.Intersect<int>(rightVal).ToList<int>();
                 
                 //Mudar valor do prefixo e caso esse seja o caso para um dos valores da interseçao
-                if (curLeaf == root && intersect.Count != 0)
+                /*if (curLeaf == root && intersect.Count != 0)
+                    curLeaf.SetNextHop(intersect[0]);*/
+
+                if (intersect.Count != 0)
+                {
                     curLeaf.SetNextHop(intersect[0]);
+                    bool delete = DeleteDefault(curLeaf.GetLeft(), intersect[0]);
+                    if (delete)
+                        curLeaf.SetLeft(null);
+                    delete = DeleteDefault(curLeaf.GetRight(), intersect[0]);
+                    if (delete)
+                        curLeaf.SetRight(null);
+                }
+                    
 
                 if (intersect.Count == 0)
+                {
                     intersect = leftVal.Union<int>(rightVal).ToList<int>();
+
+
+                    // Para conseguirmos ter um default
+                    if (curLeaf == root)
+                    {
+                        curLeaf.SetNextHop(intersect[0]);
+                        bool delete = DeleteDefault(curLeaf.GetLeft(), intersect[0]);
+                        if (delete)
+                            curLeaf.SetLeft(null);
+                        delete = DeleteDefault(curLeaf.GetRight(), intersect[0]);
+                        if (delete)
+                            curLeaf.SetRight(null);
+                    }
+                }
                 
                 return intersect;
             }
             else
             {
-                List<int> newList = new List<int>();
+                //List<int> newList = new List<int>();
 
-                newList.Add(nextHop);
+                //newList.Add(nextHop);
 
-                return newList;
+
+                curLeaf.possibleNextHops = new List<int>();
+
+                curLeaf.possibleNextHops.Add(nextHop);
+
+                return curLeaf.possibleNextHops;
             }
 
         }

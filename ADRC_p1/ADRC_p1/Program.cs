@@ -4,13 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/* Botões que não funcionam no portátil, ignorar
-    {
-
-    }
-
-    [] 
- */
 
 namespace ADRC_p1
 {
