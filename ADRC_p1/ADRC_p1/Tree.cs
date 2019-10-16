@@ -64,7 +64,7 @@ namespace ADRC_p1
         {
 
             // Criar o caminho do ficheiro de texto que representa a árvore
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "tree5.txt");
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "tree6.txt");
 
             // Abre o ficheiro, lê todas as linhas e guarda a linha num vetor de strings
             var lines = File.ReadLines(file);
@@ -91,8 +91,37 @@ namespace ADRC_p1
 
         public void PrintTable()
         {
+            //Devido a inicialmente se ter feito impressao da arvore, visto esta facilitar a visualização esta foi mantida
+            //quando se acrescentou a impressão da tabela, apesar de não ser necessária
+
+            //Imprimir árvore
             PrintLeaf(root, "", false);
             Console.WriteLine(Environment.NewLine);
+
+            //Imprimir tabela
+            PrintCell(root, "");
+        }
+
+        public void PrintCell(Leaf curleaf, string curPrefix)
+        {
+            //Caso o atual nó tenha um next-hop imprime o
+            if(curleaf.GetNextHop() != -1)
+            {
+                Console.Write(curleaf.GetNextHop() + " - ");
+
+                //Caso particular da root
+                if (curPrefix == "")
+                    Console.WriteLine("e");
+                else
+                    Console.WriteLine(curPrefix);
+            }
+
+            //Avançar para as folhas abaixo
+            if (curleaf.GetLeft() != null)
+                PrintCell(curleaf.GetLeft(), curPrefix + "0");
+
+            if (curleaf.GetRight() != null)
+                PrintCell(curleaf.GetRight(), curPrefix + "1");
         }
 
         public void PrintLeaf(Leaf curleaf, string branches, bool left)
@@ -208,6 +237,9 @@ namespace ADRC_p1
         public bool DeleteLeaf(Leaf curleaf, string prefix)
         {
             bool delete = false;
+
+            if (curleaf == null)
+                return false;
 
             //Verificar para onde seguir só caso ainda não ter atingindo o destino
             if (prefix.Length > 0)
