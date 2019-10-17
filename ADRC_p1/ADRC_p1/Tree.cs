@@ -60,11 +60,14 @@ namespace ADRC_p1
     public class Tree
     {
         Leaf root;
-        public void PrefixTree()
+        public void PrefixTree(string treeTxt)
         {
 
             // Criar o caminho do ficheiro de texto que representa a árvore
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "tree6.txt");
+            string file = Path.Combine(Directory.GetCurrentDirectory(), treeTxt);
+
+            if (file == null)
+                Environment.Exit(1);
 
             // Abre o ficheiro, lê todas as linhas e guarda a linha num vetor de strings
             var lines = File.ReadLines(file);
@@ -171,6 +174,7 @@ namespace ADRC_p1
             if(address.Length > 16)
             {
                 Console.WriteLine("The address you provided is not valid.");
+                return;
             }
 
             if(root == null)
@@ -188,7 +192,11 @@ namespace ADRC_p1
                 {
                     if (aux.GetLeft() == null)
                     {
-                        Console.WriteLine("The next hop is " + nextHop);
+                        if (nextHop == -1)
+                            Console.WriteLine("Package discarded");
+                        else
+                            Console.WriteLine("The next hop is " + nextHop);
+
                         return;
                     }
 
@@ -200,7 +208,11 @@ namespace ADRC_p1
                 {
                     if(aux.GetRight() == null)
                     {
-                        Console.WriteLine("The next hop is " + nextHop);
+                        if (nextHop == -1)
+                            Console.WriteLine("Package discarded");
+                        else
+                            Console.WriteLine("The next hop is " + nextHop);
+
                         return;
                     }
 
@@ -210,10 +222,12 @@ namespace ADRC_p1
 
                 if (aux.GetNextHop() != -1)
                     nextHop = aux.GetNextHop();
-
-                //Console.WriteLine("NEXT HOP:" + nextHop);
             }
 
+            if(nextHop == -1)
+                Console.WriteLine("Package discarded");
+            else
+                Console.WriteLine("The next hop is " + nextHop);
         }
 
         public void InsertPrefix()
@@ -289,12 +303,17 @@ namespace ADRC_p1
             ORTCIter(root, -1);
 
             //Apagar nós redundantes
-            bool delete = DeleteDefault(root.GetLeft(), root.GetNextHop());
-            /*if (delete)
-                root.SetLeft(null);*/
-            delete = DeleteDefault(root.GetRight(), root.GetNextHop());
-            /*if (delete)
-                root.SetRight(null);*/
+            if (root.GetNextHop() == -1)
+            {
+                bool delete = DeleteDefault(root.GetLeft(), -2);
+                delete = DeleteDefault(root.GetRight(), -2);
+            }
+            else
+            {
+                bool delete = DeleteDefault(root.GetLeft(), root.GetNextHop());
+                delete = DeleteDefault(root.GetRight(), root.GetNextHop());
+            }
+
 
             Console.WriteLine(Environment.NewLine + "Tree Compressed");
         }
@@ -310,12 +329,14 @@ namespace ADRC_p1
             //Verificar se nos encontramos num nó só com um filho e adicionar um caso seja esse o caso
             if(curLeaf.GetLeft() == null && curLeaf.GetRight() != null)
             {
-                curLeaf.SetLeft(new Leaf(nextHop));
+                if(nextHop != -1)
+                    curLeaf.SetLeft(new Leaf(nextHop));
 
             }
             else if(curLeaf.GetLeft() != null && curLeaf.GetRight() == null)
             {
-                curLeaf.SetRight(new Leaf(nextHop));
+                if (nextHop != -1)
+                    curLeaf.SetRight(new Leaf(nextHop));
             }
 
             if (curLeaf.GetLeft() != null && curLeaf.GetRight() != null)
@@ -327,13 +348,10 @@ namespace ADRC_p1
 
                 // Caso não seja uma folha, é necessário eliminar o Next Hop do nó atual
                 curLeaf.SetNextHop(-1);
-                
-
-
 
                 //Verificar se toda a lista contenha o mesmo nexthop, caso sim pode-se truncar por aqui
                 //facilmente verificavel caso ambos só transmitão um valor e este seja igual
-                if (leftVal[0] == rightVal[0] && leftVal.Count == 1 && rightVal.Count == 1)
+                if (leftVal[0] == rightVal[0] && leftVal.Count == 1 && rightVal.Count == 1 && leftVal[0] != -1)
                 {
                     curLeaf.SetNextHop(leftVal[0]);
                     curLeaf.SetLeft(null);
@@ -349,23 +367,24 @@ namespace ADRC_p1
 
                 if (intersect.Count != 0)
                 {
-                    curLeaf.SetNextHop(intersect[0]);
-                    bool delete = DeleteDefault(curLeaf.GetLeft(), intersect[0]);
-                    if (delete)
-                        curLeaf.SetLeft(null);
-                    delete = DeleteDefault(curLeaf.GetRight(), intersect[0]);
-                    if (delete)
-                        curLeaf.SetRight(null);
+                    if(intersect[0] != -1)
+                    {
+                        curLeaf.SetNextHop(intersect[0]);
+                        bool delete = DeleteDefault(curLeaf.GetLeft(), intersect[0]);
+                        if (delete)
+                            curLeaf.SetLeft(null);
+                        delete = DeleteDefault(curLeaf.GetRight(), intersect[0]);
+                        if (delete)
+                            curLeaf.SetRight(null);
+                    }                   
                 }
-                    
-
-                if (intersect.Count == 0)
+                else
                 {
                     intersect = leftVal.Union<int>(rightVal).ToList<int>();
 
 
                     // Para conseguirmos ter um default
-                    if (curLeaf == root)
+                    if (curLeaf == root && intersect[0] != -1)
                     {
                         curLeaf.SetNextHop(intersect[0]);
                         bool delete = DeleteDefault(curLeaf.GetLeft(), intersect[0]);

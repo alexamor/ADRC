@@ -15,7 +15,9 @@ namespace ADRC_p1
         {
             char option;
 
-            ptree.PrefixTree();
+            Console.WriteLine(args.Length);
+
+            ptree.PrefixTree(args[0]);
 
             do
             {
