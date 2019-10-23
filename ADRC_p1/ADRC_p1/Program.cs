@@ -17,6 +17,12 @@ namespace ADRC_p1
 
             Console.WriteLine(args.Length);
 
+            if (args.Length < 1)
+            {
+                Console.WriteLine("Please provide a txt file as an argument.");
+                Environment.Exit(1);
+            }
+
             ptree.PrefixTree(args[0]);
 
             do

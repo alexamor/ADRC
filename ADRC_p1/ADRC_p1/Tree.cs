@@ -384,7 +384,18 @@ namespace ADRC_p1
 
 
                     // Para conseguirmos ter um default
-                    if (curLeaf == root && intersect[0] != -1)
+                    /*if (curLeaf == root && intersect[0] != -1)
+                    {
+                        curLeaf.SetNextHop(intersect[0]);
+                        bool delete = DeleteDefault(curLeaf.GetLeft(), intersect[0]);
+                        if (delete)
+                            curLeaf.SetLeft(null);
+                        delete = DeleteDefault(curLeaf.GetRight(), intersect[0]);
+                        if (delete)
+                            curLeaf.SetRight(null);
+                    }*/
+
+                    if (curLeaf == root && !intersect.Contains(-1))
                     {
                         curLeaf.SetNextHop(intersect[0]);
                         bool delete = DeleteDefault(curLeaf.GetLeft(), intersect[0]);
@@ -395,7 +406,7 @@ namespace ADRC_p1
                             curLeaf.SetRight(null);
                     }
                 }
-                
+
                 return intersect;
             }
             else

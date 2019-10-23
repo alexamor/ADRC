@@ -1,0 +1,6 @@
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\bin\Release\ADRC_p1.exe.config
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\bin\Release\ADRC_p1.exe
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\bin\Release\ADRC_p1.pdb
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\obj\Release\ADRC_p1.csprojAssemblyReference.cache
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\obj\Release\ADRC_p1.exe
+C:\Users\Sofia\Documents\GitHub\ADRC\ADRC_p1\ADRC_p1\obj\Release\ADRC_p1.pdb
