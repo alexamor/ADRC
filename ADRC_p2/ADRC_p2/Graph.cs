@@ -7,10 +7,15 @@ public class Graph
     public const int MAX_NODES = 64000;
 	public Graph()
 	{
+        int[] cliHeap = new int[MAX_NODES];
+        int[] parHeap = new int[MAX_NODES];
+        int[] provHeap = new int[MAX_NODES];
+    }
 
-	}
+    public void Disktra(Node root)
+    {
 
-
+    }
 }
 
 
