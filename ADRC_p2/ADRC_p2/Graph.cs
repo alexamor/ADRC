@@ -7,14 +7,21 @@ public class Graph
     public const int MAX_NODES = 64000;
 	public Graph()
 	{
-        int[] cliHeap = new int[MAX_NODES];
-        int[] parHeap = new int[MAX_NODES];
-        int[] provHeap = new int[MAX_NODES];
+        Node[] cliHeap = new Node[MAX_NODES];
+        Node[] parHeap = new Node[MAX_NODES];
+        Node[] provHeap = new Node[MAX_NODES];
     }
 
-    public void Disktra(Node root)
+    public void Disktra(Node root, int size)
     {
+        //vetor com os caminhos para a root
+        Node[] path = new Node[size];
 
+        Node cur = root;
+
+        //Ciclo para percorrer todos os nós vizinhos
+        ////Depois mudar a condição
+        while(true)
     }
 }
 
@@ -22,6 +29,7 @@ public class Graph
 public class Node
 {
     public int id;
+    public int dist = int.MaxValue;
 
     public List<Node> provider = new List<Node>();
     public List<Node> customer = new List<Node>();
