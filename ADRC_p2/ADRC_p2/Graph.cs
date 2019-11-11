@@ -4,16 +4,20 @@ using System.Collections.Generic;
 
 public class Graph
 {
+    ///Depois fazer vetor para facilitar encontrar nós nas heaps
+
     public const int MAX_NODES = 64000;
+
+    Node[] cliHeap = new Node[MAX_NODES];
+    Node[] pairHeap = new Node[MAX_NODES];
+    Node[] provHeap = new Node[MAX_NODES];
+
+    int cliFree = 0;
+    int pairFree = 0;
+    int provFree = 0;
+
     public Graph()
     {
-        Node[] cliHeap = new Node[MAX_NODES];
-        Node[] parHeap = new Node[MAX_NODES];
-        Node[] provHeap = new Node[MAX_NODES];
-
-        int cliFree = 0;
-        int parFree = 0;
-        int provFree = 0;
 
     }
 
@@ -26,7 +30,7 @@ public class Graph
     }
 
     /*insere um nó na heap*/
-    public void InsertHeap(Node[] heap, int free, Node node)
+    public void InsertHeap(Node[] heap, ref int free, Node node)
     {
         if ((free + 1) < MAX_NODES)
         {
@@ -80,7 +84,7 @@ public class Graph
 
 
     /*retira o elemento com maior prioridade, ou seja, o menor, da heap*/
-    public Node PopHeap(Node[] heap, int free)
+    public Node PopHeap(Node[] heap, ref int free)
     {
         /*Troca o menor elemento com o último da heap e repõe a ordem com FixDown*/
         Swap(heap, 0, free - 1);
@@ -88,64 +92,155 @@ public class Graph
         return heap[--free];
     }
 
-
-    public void Disktra(Node root, int size)
+    //Função que corre o Dikstra
+    //Esta função irá ser executada 3 vezes, uma para os fornecedores, seguida pelos pares e finalizada pelos clientes, sendo indicada a
+    //etapa com o stage
+    public void Disktra(Node[] path, Node root, int size, int stage)
     {
-        //vetor com os caminhos para a root
-        Node[] path = new Node[size];
+        Node cur;
+        
+        //Inicialização para o primeiro caso, ou atribuição de uma nova heap
+        if (stage == 1)
+        {
+            path = new Node[size];
 
-        //Inicializar a raiz
-        Node cur = root;
-        cur.dist = 0;
+            //Inicializar a raiz
+            cur = root;
+            cur.dist = 0;
 
-        addToHeaps(cur, path);
-
+            AddToHeaps(cur, path);
+        }
+        else
+        {
+            if (stage == 2)
+            {
+                cur = PopHeap(pairHeap, ref pairFree);
+            }
+            else
+            {
+                cur = PopHeap(cliHeap, ref cliFree);
+            }
+        }
+        
         //Ciclo para percorrer todos os nós vizinhos
-        ////Depois mudar a condição
         while (true)
         {
-            ////Função de retirar o nó menor de cliHeap
-            cur =
+            ////Função de retirar o nó menor da Heap
+            if(stage == 1)
+                cur = PopHeap(this.provHeap, ref provFree);
+            else if(stage == 2)
+                cur = PopHeap(this.pairHeap, ref pairFree);
+            else
+                cur = PopHeap(this.cliHeap, ref cliFree);
 
             //Adicionar os vizinhos aos respetivos grupos
-            addToHeaps(cur, path);
+            if(stage == 1)
+                AddToHeaps(cur, path);
+            else
+            {
+                //No caso dos pares como nao pode haver par de par não ha necessidade de adicionar mais valores a lista de pares apos a stage 1
+                AddToCliHeap(cur, path);
+            }
 
-
+            //Se terminou a heap sair
+            if ((provFree == 0 && stage == 1) || (pairFree == 0 && stage == 2) || (cliFree == 0 && stage == 3))
+                break;
         }
+
+        stage++;
+
+        //Caso ja tenha verificado os caminhos para fornecedores, clientes e pares terminar o dikstra
+        if (stage == 4)
+            return;
+        else
+            Disktra(path, root, size, stage + 1);
     }
 
     ///Depois se calhar receber como argumento o tipo visto comportar-se diferente conforme se estamos a lidar com os clientes, pares ou fornecedores
-    public void addToHeaps(Node cur, Node[] _path)
+    public void AddToHeaps(Node cur, Node[] _path)
     {
+        AddToProvHeap(cur, _path);
+        AddToPairHeap(cur, _path);
+        AddToCliHeap(cur, _path);
+    }
+
+    public void AddToProvHeap(Node cur, Node[] _path)
+    {
+        //Verificar por cada nó dos fornecedores se algum passou a ter um melhor caminho/ainda nao tinha um caminho
         foreach (Node n in cur.provider)
         {
-            ////Função de adicionar ordenadamente a provHeap
+            int dis = cur.dist + 1;
+            bool changed = false;
 
+            //Caso o nó ja esteja noutra heap será preferivel vir para a heap de providers mesmo que o caminho seja mais caro
+            changed = CheckForNode(pairHeap, ref pairFree, cur);
+            changed = (CheckForNode(cliHeap, ref cliFree, cur) || changed);
+
+            if (dis < n.dist || changed)
+            {
+                n.dist = dis;
+                _path[n.id] = cur;
+                InsertHeap(this.provHeap, ref provFree, n);
+            }
+        }
+    }
+
+    public void AddToPairHeap(Node cur, Node[] _path)
+    {
+        //Verificar por cada nó dos fornecedores se algum passou a ter um melhor caminho/ainda nao tinha um caminho
+        foreach (Node n in cur.pair)
+        {
+            int dis = cur.dist + 1;
+            bool changed = false;
+
+            //Caso o nó ja esteja noutra heap será preferivel vir para a heap de providers mesmo que o caminho seja mais caro
+            changed = CheckForNode(cliHeap, ref cliFree, cur);
+
+            if (dis < n.dist || changed)
+            {
+                n.dist = dis;
+                _path[n.id] = cur;
+                InsertHeap(this.pairHeap, ref pairFree, n);
+            }
+        }
+    }
+
+    public void AddToCliHeap(Node cur, Node[] _path)
+    {
+        //Verificar por cada nó dos fornecedores se algum passou a ter um melhor caminho/ainda nao tinha um caminho
+        foreach (Node n in cur.pair)
+        {
             int dis = cur.dist + 1;
 
             if (dis < n.dist)
             {
                 n.dist = dis;
                 _path[n.id] = cur;
+                InsertHeap(this.cliHeap, ref cliFree, n);
+            }
+        }
+    }
+
+    //Verifica e remove nó da heap enviada se ja tiver o tal nó
+    public bool CheckForNode(Node[] heap, ref int heapSize, Node target)
+    {
+        int index = -1;
+
+        for(int i = 0; i < heapSize; i++)
+        {
+            if (heap[i] == target)
+            {
+                index = i;
+                heapSize--;
+                Swap(heap, i, heapSize);
+                FixDown(heap, 0, heapSize);
+                return true;
             }
         }
 
-        foreach (Node n in cur.pair)
-        {
-            ////Função de adicionar ordenadamente a parHeap
-
-            int dis = cur.dist + 1;
-        }
-
-        foreach (Node n in cur.customer)
-        {
-            ////Função de adicionar ordenadamente a provHeap
-
-            int dis = cur.dist + 1;
-        }
+        return false;
     }
 }
-
 
 public class Node
 {
