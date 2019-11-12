@@ -4,13 +4,18 @@ using System.Collections.Generic;
 
 public class Graph
 {
-    ///Depois fazer vetor para facilitar encontrar nós nas heaps
+
 
     public const int MAX_NODES = 64000;
 
     Node[] cliHeap = new Node[MAX_NODES];
     Node[] pairHeap = new Node[MAX_NODES];
     Node[] provHeap = new Node[MAX_NODES];
+
+    //localização dos nós nas heaps. 
+    //primeiro int: 1 - provider, 2 - par 3 - customer
+    //segundo int: localização na heap
+    int[,] locationHeap = new int[MAX_NODES,2];
 
     int cliFree = 0;
     int pairFree = 0;
@@ -27,6 +32,10 @@ public class Graph
         Node aux = heap[a];
         heap[a] = heap[b];
         heap[b] = aux;
+
+        //atualizar localizações
+        locationHeap[aux.id, 1] = b;
+        locationHeap[heap[a].id, 1] = a;
     }
 
     /*insere um nó na heap*/
@@ -35,6 +44,8 @@ public class Graph
         if ((free + 1) < MAX_NODES)
         {
             heap[free] = node;
+            // atualizar localização do nó na heap
+            locationHeap[node.id, 1] = free;
             FixUp(heap, free);
             free++;
         }
@@ -92,10 +103,10 @@ public class Graph
         return heap[--free];
     }
 
-    //Função que corre o Dikstra
+    //Função que corre o Dijkstra
     //Esta função irá ser executada 3 vezes, uma para os fornecedores, seguida pelos pares e finalizada pelos clientes, sendo indicada a
     //etapa com o stage
-    public void Disktra(Node[] path, Node root, int size, int stage)
+    public void Dijkstra(Node[] path, Node root, int size, int stage)
     {
         Node cur;
         
@@ -107,10 +118,10 @@ public class Graph
             //Inicializar a raiz
             cur = root;
             cur.dist = 0;
-
-            AddToHeaps(cur, path);
+            provHeap[0] = cur;
+            //AddToHeaps(cur, path);
         }
-        else
+        /*else
         {
             if (stage == 2)
             {
@@ -120,7 +131,7 @@ public class Graph
             {
                 cur = PopHeap(cliHeap, ref cliFree);
             }
-        }
+        }*/
         
         //Ciclo para percorrer todos os nós vizinhos
         while (true)
@@ -153,7 +164,7 @@ public class Graph
         if (stage == 4)
             return;
         else
-            Disktra(path, root, size, stage + 1);
+            Dijkstra(path, root, size, stage);
     }
 
     ///Depois se calhar receber como argumento o tipo visto comportar-se diferente conforme se estamos a lidar com os clientes, pares ou fornecedores
@@ -173,13 +184,14 @@ public class Graph
             bool changed = false;
 
             //Caso o nó ja esteja noutra heap será preferivel vir para a heap de providers mesmo que o caminho seja mais caro
-            changed = CheckForNode(pairHeap, ref pairFree, cur);
-            changed = (CheckForNode(cliHeap, ref cliFree, cur) || changed);
+            changed = CheckForNode(pairHeap, ref pairFree, cur, 2);
+            changed = (CheckForNode(cliHeap, ref cliFree, cur, 3) || changed);
 
             if (dis < n.dist || changed)
             {
                 n.dist = dis;
                 _path[n.id] = cur;
+                locationHeap[n.id, 0] = 1;
                 InsertHeap(this.provHeap, ref provFree, n);
             }
         }
@@ -194,12 +206,13 @@ public class Graph
             bool changed = false;
 
             //Caso o nó ja esteja noutra heap será preferivel vir para a heap de providers mesmo que o caminho seja mais caro
-            changed = CheckForNode(cliHeap, ref cliFree, cur);
+            changed = CheckForNode(cliHeap, ref cliFree, cur, 1);
 
             if (dis < n.dist || changed)
             {
                 n.dist = dis;
                 _path[n.id] = cur;
+                locationHeap[n.id, 0] = 2;
                 InsertHeap(this.pairHeap, ref pairFree, n);
             }
         }
@@ -208,7 +221,7 @@ public class Graph
     public void AddToCliHeap(Node cur, Node[] _path)
     {
         //Verificar por cada nó dos fornecedores se algum passou a ter um melhor caminho/ainda nao tinha um caminho
-        foreach (Node n in cur.pair)
+        foreach (Node n in cur.customer)
         {
             int dis = cur.dist + 1;
 
@@ -216,29 +229,40 @@ public class Graph
             {
                 n.dist = dis;
                 _path[n.id] = cur;
+                locationHeap[n.id, 0] = 3;
                 InsertHeap(this.cliHeap, ref cliFree, n);
             }
         }
     }
 
     //Verifica e remove nó da heap enviada se ja tiver o tal nó
-    public bool CheckForNode(Node[] heap, ref int heapSize, Node target)
+    public bool CheckForNode(Node[] heap, ref int heapSize, Node target, int type)
     {
-        int index = -1;
+
+        if (locationHeap[target.id, 0] == type)
+        {
+            int index = locationHeap[target.id, 1];
+            heapSize--;
+            Swap(heap, index, heapSize);
+            FixDown(heap, index, heapSize);
+            return true;
+        }
+        else
+            return false;
+
+        /*int index = -1;
 
         for(int i = 0; i < heapSize; i++)
         {
             if (heap[i] == target)
             {
                 index = i;
-                heapSize--;
-                Swap(heap, i, heapSize);
-                FixDown(heap, 0, heapSize);
+                
                 return true;
             }
         }
 
-        return false;
+        return false;*/
     }
 }
 

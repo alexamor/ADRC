@@ -8,23 +8,19 @@
     ".NETCoreApp,Version=v3.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Alexandre\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Sofia\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Outros\\Adrc\\ADRC\\ADRC_p2\\ADRC_p2\\ADRC_p2.csproj",
+      "projectUniqueName": "C:\\Users\\Sofia\\Documents\\GitHub\\ADRC\\ADRC_p2\\ADRC_p2\\ADRC_p2.csproj",
       "projectName": "ADRC_p2",
-      "projectPath": "D:\\Outros\\Adrc\\ADRC\\ADRC_p2\\ADRC_p2\\ADRC_p2.csproj",
-      "packagesPath": "C:\\Users\\Alexandre\\.nuget\\packages\\",
-      "outputPath": "D:\\Outros\\Adrc\\ADRC\\ADRC_p2\\ADRC_p2\\obj\\",
+      "projectPath": "C:\\Users\\Sofia\\Documents\\GitHub\\ADRC\\ADRC_p2\\ADRC_p2\\ADRC_p2.csproj",
+      "packagesPath": "C:\\Users\\Sofia\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sofia\\Documents\\GitHub\\ADRC\\ADRC_p2\\ADRC_p2\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Alexandre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Sofia\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
