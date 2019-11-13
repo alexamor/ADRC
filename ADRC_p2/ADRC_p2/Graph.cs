@@ -12,6 +12,8 @@ public class Graph
     Queue<Node> pairQ = new Queue<Node>();
     Queue<Node> provQ = new Queue<Node>();
 
+    Queue<Node> auxProvQ = new Queue<Node>();
+
 
     public void BFS(Node root)
     {
@@ -24,9 +26,11 @@ public class Graph
         CliSearch(path);
     }
 
+    /*Encontra os caminhos através de fornecedores na origem (que na realidade vão ser caminhos de clientes) e calcula as distâncias*/
     public void ProvSearch(int[] _path, Node root)
     {
         provQ.Enqueue(root);
+        auxProvQ.Enqueue(root);
         
         while(provQ.Count != 0)
         {
@@ -40,14 +44,60 @@ public class Graph
                     p.dist = cur.dist + 1;
                     provQ.Enqueue(p);
                     _path[p.id] = cur.id;
+
+                    /*Colocar na lista que vai ser utilizada na procura de pares*/
+                    auxProvQ.Enqueue(p);
                 }
             }
         }
     }
 
+    /*Encontra os caminhos através de pares e fornecedores*/
     public void PairSearch(int[] _path, Node root)
     {
 
+        while(auxProvQ.Count != 0)
+        {
+            Node cur = auxProvQ.Dequeue();
+
+            foreach( Node p in cur.pair)
+            {
+                if(p.type == 0 || p.type == 1)
+                {
+                    p.type = 2;
+                    p.dist = cur.dist + 1;
+                    pairQ.Enqueue(p);
+                    _path[p.id] = cur.id;
+                }
+            }
+
+            foreach(Node p in cur.customer)
+            {
+                if(p.type == 0)
+                {
+                    p.type = 1;
+                    p.dist = cur.dist + 1;
+                    cliQ.Enqueue(p);
+                    _path[p.id] = cur.id;
+                }
+            }
+        }
+
+        while(pairQ.Count != 0)
+        {
+            Node cur = pairQ.Dequeue();
+
+            foreach(Node p in cur.customer)
+            {
+                if(p.type == 0)
+                {
+                    p.type = 1;
+                    p.dist = cur.dist + 1;
+                    cliQ.Enqueue(p);
+                    _path[p.id] = cur.id;
+                }
+            }
+        }
     }
 
     public void CliSearch(int[] _path)
