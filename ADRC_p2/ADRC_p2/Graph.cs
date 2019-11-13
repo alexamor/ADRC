@@ -21,7 +21,7 @@ public class Graph
 
         ProvSearch(path, root);
         PairSearch(path, root);
-        CliSearch(path, root);
+        CliSearch(path);
     }
 
     public void ProvSearch(int[] _path, Node root)
@@ -50,9 +50,25 @@ public class Graph
 
     }
 
-    public void CliSearch(int[] _path, Node root)
+    public void CliSearch(int[] _path)
     {
+        while (cliQ.Count != 0)
+        {
+            Node cur = cliQ.Dequeue();
 
+            //Ignorar nos que eram clientes mas depois foram reescritos para pares
+            if(cur.type != 2)
+                foreach (Node p in cur.customer)
+                {
+                    if (p.type == 0)
+                    {
+                        p.type = 1;
+                        p.dist = cur.dist + 1;
+                        cliQ.Enqueue(p);
+                        _path[p.id] = cur.id;
+                    }
+                }
+        }
     }
 
 }
