@@ -9,6 +9,10 @@ public class Graph
     public int nrPairs = 0;
 
     public const int MAX_NODES = 66000;
+    public const int MAX_DIST = 1000;
+
+    public int[] commercialDist = new int[MAX_DIST];
+    public int[] shortestDist = new int[MAX_DIST];
 
     Queue<Node> cliQ = new Queue<Node>();
     Queue<Node> pairQ = new Queue<Node>();
@@ -24,6 +28,8 @@ public class Graph
         nrProviders = 0;
     }
 
+
+    /*BFS para encontrar os caminhos mais curtos comerciais*/
     public int[] BFS(Node root)
     {
         int[] path = new int[MAX_NODES];
@@ -60,6 +66,7 @@ public class Graph
                     p.type = 4; //make node visited
                     p.dist = cur.dist + 1;
                     queue.Enqueue(p);
+                    shortestDist[p.dist]++;
                 }
             }
 
@@ -70,6 +77,7 @@ public class Graph
                     p.type = 4; //make node visited
                     p.dist = cur.dist + 1;
                     queue.Enqueue(p);
+                    shortestDist[p.dist]++;
                 }
             }
 
@@ -80,6 +88,7 @@ public class Graph
                     p.type = 4; //make node visited
                     p.dist = cur.dist + 1;
                     queue.Enqueue(p);
+                    shortestDist[p.dist]++;
                 }
             }
         }
@@ -108,7 +117,7 @@ public class Graph
                     p.dist = cur.dist + 1;
                     provQ.Enqueue(p);
                     _path[p.id] = cur.id;
-
+                    commercialDist[p.dist]++;
                     /*Colocar na lista que vai ser utilizada na procura de pares*/
                     auxProvQ.Enqueue(p);
                 }
@@ -129,13 +138,18 @@ public class Graph
                 if(p.type == 0 || p.type == 1)
                 {
                     if (p.type == 1)
+                    {
                         nrClients--;
+                        commercialDist[p.dist]--;
+                    }
+
 
                     nrPairs++;
                     p.type = 2;
                     p.dist = cur.dist + 1;
                     pairQ.Enqueue(p);
                     _path[p.id] = cur.id;
+                    commercialDist[p.dist]++;
                 }
             }
 
@@ -148,6 +162,7 @@ public class Graph
                     p.dist = cur.dist + 1;
                     cliQ.Enqueue(p);
                     _path[p.id] = cur.id;
+                    commercialDist[p.dist]++;
                 }
             }
         }
@@ -165,6 +180,7 @@ public class Graph
                     p.dist = cur.dist + 1;
                     cliQ.Enqueue(p);
                     _path[p.id] = cur.id;
+                    commercialDist[p.dist]++;
                 }
             }
         }
@@ -187,12 +203,32 @@ public class Graph
                         p.dist = cur.dist + 1;
                         cliQ.Enqueue(p);
                         _path[p.id] = cur.id;
+                        commercialDist[p.dist]++;
                     }
                 }
         }
     }
 
-    public void CumulativeFunction();
+    public void CumulativeFunction()
+    {
+        int totalDist = 0;
+
+        float[] probCommercial = new float[MAX_DIST];
+        float[] probShortest = new float[MAX_DIST];
+
+        for (int i = 0; i < MAX_DIST; i++)
+        {
+            totalDist += commercialDist[i];
+        }
+
+       for(int i = 0; i <MAX_DIST; i++)
+        {
+            probCommercial[i] += ((float)commercialDist[i]/totalDist);
+            probShortest[i] += ((float)shortestDist[i] / totalDist);
+        }
+
+
+    }
 
 }
 
