@@ -11,7 +11,7 @@ namespace ADRC_p2
 
         static void Main(string[] args)
         {
-            string networkTxt = "LargeNetwork.txt";
+            string networkTxt = "Network2.txt";
             // Criar o caminho do ficheiro de texto que representa a rede
             string file = Path.Combine(Directory.GetCurrentDirectory(), networkTxt);
 
@@ -120,15 +120,23 @@ namespace ADRC_p2
                         x.Print();
                     }*/
 
-                    Console.WriteLine("Clients: " + graph.nrClients);
-                    Console.WriteLine("Pairs: " + graph.nrPairs);
-                    Console.WriteLine("Providers: " + graph.nrProviders);
+                    Console.WriteLine("Clients: " + (float)graph.nrClients/(float)graph.nrTotal);
+                    Console.WriteLine("Pairs: " + (float)graph.nrPairs /(float)graph.nrTotal);
+                    Console.WriteLine("Providers: " + (float)graph.nrProviders /(float)graph.nrTotal);
 
                     //Zerar valor dos contadores de clientes, pares e fornecedores
                     graph.ZeroCounters();
+
+                    graph.ShortestBFS(network[i]);
+
+                    for (int j = 0; j < MAX_NODES; j++)
+                        if (network[j] != null)
+                            network[j].type = 0;
                 }
 
             }
+
+            graph.CumulativeFunction();
 
             Console.WriteLine("DONE!");
         }

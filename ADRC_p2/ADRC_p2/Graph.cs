@@ -7,6 +7,7 @@ public class Graph
     public int nrClients = 0;
     public int nrProviders = 0;
     public int nrPairs = 0;
+    public int nrTotal = 0;
 
     public const int MAX_NODES = 66000;
     public const int MAX_DIST = 1000;
@@ -26,6 +27,7 @@ public class Graph
         nrClients = 0;
         nrPairs = 0;
         nrProviders = 0;
+        nrTotal = 0;
     }
 
 
@@ -113,6 +115,7 @@ public class Graph
                 if(p.type == 0)
                 {
                     p.type = 3;
+                    nrTotal++;
                     nrProviders++;
                     p.dist = cur.dist + 1;
                     provQ.Enqueue(p);
@@ -140,11 +143,13 @@ public class Graph
                     if (p.type == 1)
                     {
                         nrClients--;
+                        nrTotal--;
                         commercialDist[p.dist]--;
                     }
 
 
                     nrPairs++;
+                    nrTotal++;
                     p.type = 2;
                     p.dist = cur.dist + 1;
                     pairQ.Enqueue(p);
@@ -159,6 +164,7 @@ public class Graph
                 {
                     p.type = 1;
                     nrClients++;
+                    nrTotal++;
                     p.dist = cur.dist + 1;
                     cliQ.Enqueue(p);
                     _path[p.id] = cur.id;
@@ -177,6 +183,7 @@ public class Graph
                 {
                     p.type = 1;
                     nrClients++;
+                    nrTotal++;
                     p.dist = cur.dist + 1;
                     cliQ.Enqueue(p);
                     _path[p.id] = cur.id;
@@ -200,6 +207,7 @@ public class Graph
                     {
                         p.type = 1;
                         nrClients++;
+                        nrTotal++;
                         p.dist = cur.dist + 1;
                         cliQ.Enqueue(p);
                         _path[p.id] = cur.id;
@@ -222,10 +230,16 @@ public class Graph
         }
 
        for(int i = 0; i <MAX_DIST; i++)
-        {
+       {
             probCommercial[i] += ((float)commercialDist[i]/totalDist);
             probShortest[i] += ((float)shortestDist[i] / totalDist);
-        }
+
+            if (commercialDist[i] != 0 || shortestDist[i] != 0)
+            {
+                Console.WriteLine("c-" + probCommercial[i]);
+                Console.WriteLine("s+" + probShortest[i]);
+            }
+       }
 
 
     }
