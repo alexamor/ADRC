@@ -7,11 +7,11 @@ namespace ADRC_p2
     {
 
 
-        public const int MAX_NODES = 64000;
+        public const int MAX_NODES = 66000;
 
         static void Main(string[] args)
         {
-            string networkTxt = "network1.txt";
+            string networkTxt = "LargeNetwork.txt";
             // Criar o caminho do ficheiro de texto que representa a rede
             string file = Path.Combine(Directory.GetCurrentDirectory(), networkTxt);
 
@@ -30,7 +30,7 @@ namespace ADRC_p2
                 // Separa a linha do ficheiro em prefixo e next hop
                 string[] node = line.Split(' ');
 
-                Console.WriteLine(node[0]);
+                //Console.WriteLine(node[0]);
 
                 int firstNode = Int32.Parse(node[0]);
 
@@ -69,12 +69,43 @@ namespace ADRC_p2
 
             }
 
-            /*for (int i = 0; i < MAX_NODES; i++)
+
+            Graph graph = new Graph();
+
+            Console.WriteLine("Id da raiz?");
+            /*int id = Int32.Parse(Console.ReadLine());
+
+            Node root = network[id];
+
+            int[] path = graph.BFS(root);*/
+            int[] path;
+
+            for (int i = 0; i < MAX_NODES; i++)
             {
                 if (network[i] != null)
                 {
-                    Console.WriteLine("Nó :" + network[i].id);
-                    Console.WriteLine("Clientes:");
+                    path = graph.BFS(network[i]);
+
+                    for (int j = 0; j < MAX_NODES; j++)
+                        if (network[j] != null)
+                            network[j].type = 0;
+                    /*Console.WriteLine("Nó :" + network[i].id);
+                    Console.WriteLine("Tipo de rota: ");
+                    if(network[i].type == 3)
+                    {
+                        Console.WriteLine("Cliente");
+                    }
+                    else if(network[i].type == 2)
+                    {
+                        Console.WriteLine("Par");
+                    }
+                    else if(network[i].type == 1)
+                    {
+                        Console.WriteLine("Fornecedor");
+                    }
+                    Console.WriteLine(network[i].dist);
+                    Console.WriteLine();*/
+                    /*Console.WriteLine("Clientes:");
                     foreach (Node x in network[i].customer){
                         x.Print();
                     }
@@ -87,12 +118,14 @@ namespace ADRC_p2
                     foreach (Node x in network[i].provider)
                     {
                         x.Print();
-                    }
+                    }*/
 
 
                 }
 
-            }*/
+            }
+
+            Console.WriteLine("DONE!");
         }
     }
 }

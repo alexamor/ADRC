@@ -6,7 +6,7 @@ public class Graph
 {
 
 
-    public const int MAX_NODES = 64000;
+    public const int MAX_NODES = 66000;
 
     Queue<Node> cliQ = new Queue<Node>();
     Queue<Node> pairQ = new Queue<Node>();
@@ -15,7 +15,7 @@ public class Graph
     Queue<Node> auxProvQ = new Queue<Node>();
 
 
-    public void BFS(Node root)
+    public int[] BFS(Node root)
     {
         int[] path = new int[MAX_NODES];
 
@@ -24,6 +24,8 @@ public class Graph
         ProvSearch(path, root);
         PairSearch(path, root);
         CliSearch(path);
+
+        return path;
     }
 
     /*Encontra os caminhos através de fornecedores na origem (que na realidade vão ser caminhos de clientes) e calcula as distâncias*/
