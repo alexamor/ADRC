@@ -14,7 +14,7 @@ public class Graph
 
     Queue<Node> auxProvQ = new Queue<Node>();
 
-
+    /*BFS para encontrar os caminhos mais curtos comerciais*/
     public int[] BFS(Node root)
     {
         int[] path = new int[MAX_NODES];
@@ -24,6 +24,58 @@ public class Graph
         ProvSearch(path, root);
         PairSearch(path, root);
         CliSearch(path);
+
+        return path;
+    }
+
+    /*BFS para encontrar os caminhos mais curtos gerais*/
+    public int[] ShortestBFS(Node root)
+    {
+        int[] path = new int[MAX_NODES];
+
+        root.dist = 0;
+
+        Queue<Node> queue = new Queue<Node>();
+
+        queue.Enqueue(root);
+        
+        while(queue.Count != 0)
+        {
+            Node cur = queue.Dequeue();
+
+            /*visita todos os vizinhos e mete os não visitados na queue e atualiza as suas distâncias.*/
+            foreach (Node p in cur.provider)
+            {
+                if(p.type == 0)
+                {
+                    p.type = 4; //make node visited
+                    p.dist = cur.dist + 1;
+                    queue.Enqueue(p);
+                }
+            }
+
+            foreach (Node p in cur.pair)
+            {
+                if (p.type == 0)
+                {
+                    p.type = 4; //make node visited
+                    p.dist = cur.dist + 1;
+                    queue.Enqueue(p);
+                }
+            }
+
+            foreach (Node p in cur.customer)
+            {
+                if (p.type == 0)
+                {
+                    p.type = 4; //make node visited
+                    p.dist = cur.dist + 1;
+                    queue.Enqueue(p);
+                }
+            }
+        }
+        
+        
 
         return path;
     }
@@ -122,6 +174,8 @@ public class Graph
                 }
         }
     }
+
+    public void CumulativeFunction();
 
 }
 
