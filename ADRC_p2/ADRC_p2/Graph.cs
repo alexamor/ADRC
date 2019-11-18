@@ -37,6 +37,7 @@ public class Graph
         int[] path = new int[MAX_NODES];
 
         root.dist = 0;
+        root.type = -1;
 
         ProvSearch(path, root);
         PairSearch(path, root);
@@ -55,7 +56,7 @@ public class Graph
         Queue<Node> queue = new Queue<Node>();
 
         queue.Enqueue(root);
-        
+        root.type = 4;
         while(queue.Count != 0)
         {
             Node cur = queue.Dequeue();
@@ -221,23 +222,27 @@ public class Graph
     {
         int totalDist = 0;
 
-        float[] probCommercial = new float[MAX_DIST];
-        float[] probShortest = new float[MAX_DIST];
+        float probCommercial = 0;
+        float probShortest = 0;
 
         for (int i = 0; i < MAX_DIST; i++)
         {
             totalDist += commercialDist[i];
         }
-
+        Console.WriteLine("totalDist " + totalDist);
        for(int i = 0; i <MAX_DIST; i++)
        {
-            probCommercial[i] += ((float)commercialDist[i]/totalDist);
-            probShortest[i] += ((float)shortestDist[i] / totalDist);
+
+            probCommercial +=((float)commercialDist[i] / totalDist);
+            probShortest += ((float)shortestDist[i] / totalDist);
+
+          
 
             if (commercialDist[i] != 0 || shortestDist[i] != 0)
             {
-                Console.WriteLine("c-" + probCommercial[i]);
-                Console.WriteLine("s+" + probShortest[i]);
+                Console.WriteLine("probCOmmercial " + commercialDist[i]);
+                Console.WriteLine("c-" + probCommercial);
+                Console.WriteLine("s+" + probShortest);
             }
        }
 
