@@ -120,7 +120,12 @@ namespace ADRC_p2
                         x.Print();
                     }*/
 
+                    Console.WriteLine("Clients: " + graph.nrClients);
+                    Console.WriteLine("Pairs: " + graph.nrPairs);
+                    Console.WriteLine("Providers: " + graph.nrProviders);
 
+                    //Zerar valor dos contadores de clientes, pares e fornecedores
+                    graph.ZeroCounters();
                 }
 
             }

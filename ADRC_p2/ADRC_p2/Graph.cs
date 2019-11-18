@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 public class Graph
 {
-
+    public int nrClients = 0;
+    public int nrProviders = 0;
+    public int nrPairs = 0;
 
     public const int MAX_NODES = 66000;
 
@@ -13,6 +15,14 @@ public class Graph
     Queue<Node> provQ = new Queue<Node>();
 
     Queue<Node> auxProvQ = new Queue<Node>();
+
+
+    public void ZeroCounters()
+    {
+        nrClients = 0;
+        nrPairs = 0;
+        nrProviders = 0;
+    }
 
     public int[] BFS(Node root)
     {
@@ -94,6 +104,7 @@ public class Graph
                 if(p.type == 0)
                 {
                     p.type = 3;
+                    nrProviders++;
                     p.dist = cur.dist + 1;
                     provQ.Enqueue(p);
                     _path[p.id] = cur.id;
@@ -117,6 +128,10 @@ public class Graph
             {
                 if(p.type == 0 || p.type == 1)
                 {
+                    if (p.type == 1)
+                        nrClients--;
+
+                    nrPairs++;
                     p.type = 2;
                     p.dist = cur.dist + 1;
                     pairQ.Enqueue(p);
@@ -129,6 +144,7 @@ public class Graph
                 if(p.type == 0)
                 {
                     p.type = 1;
+                    nrClients++;
                     p.dist = cur.dist + 1;
                     cliQ.Enqueue(p);
                     _path[p.id] = cur.id;
@@ -145,6 +161,7 @@ public class Graph
                 if(p.type == 0)
                 {
                     p.type = 1;
+                    nrClients++;
                     p.dist = cur.dist + 1;
                     cliQ.Enqueue(p);
                     _path[p.id] = cur.id;
@@ -166,6 +183,7 @@ public class Graph
                     if (p.type == 0)
                     {
                         p.type = 1;
+                        nrClients++;
                         p.dist = cur.dist + 1;
                         cliQ.Enqueue(p);
                         _path[p.id] = cur.id;
