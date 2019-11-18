@@ -14,7 +14,6 @@ public class Graph
 
     Queue<Node> auxProvQ = new Queue<Node>();
 
-    /*BFS para encontrar os caminhos mais curtos comerciais*/
     public int[] BFS(Node root)
     {
         int[] path = new int[MAX_NODES];
