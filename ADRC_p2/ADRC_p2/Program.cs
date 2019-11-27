@@ -120,12 +120,9 @@ namespace ADRC_p2
                         x.Print();
                     }*/
 
-                    Console.WriteLine("Clients: " + (float)graph.nrClients/(float)graph.nrTotal);
-                    Console.WriteLine("Pairs: " + (float)graph.nrPairs /(float)graph.nrTotal);
-                    Console.WriteLine("Providers: " + (float)graph.nrProviders /(float)graph.nrTotal);
 
                     //Zerar valor dos contadores de clientes, pares e fornecedores
-                    graph.ZeroCounters();
+                    //graph.ZeroCounters();
 
                     graph.ShortestBFS(network[i]);
 
@@ -135,6 +132,10 @@ namespace ADRC_p2
                 }
 
             }
+
+            Console.WriteLine("Clients: " + (float)graph.nrClients / (float)graph.nrTotal);
+            Console.WriteLine("Pairs: " + (float)graph.nrPairs / (float)graph.nrTotal);
+            Console.WriteLine("Providers: " + (float)graph.nrProviders / (float)graph.nrTotal);
 
             graph.CumulativeFunction();
 
