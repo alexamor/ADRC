@@ -11,9 +11,16 @@ namespace ADRC_p2
 
         static void Main(string[] args)
         {
-            string networkTxt = "LargeNetwork.txt";
+
+            if (args.Length < 1)
+            {
+                Console.WriteLine("Please provide a txt file as an argument.");
+                Environment.Exit(1);
+            }
+
+
             // Criar o caminho do ficheiro de texto que representa a rede
-            string file = Path.Combine(Directory.GetCurrentDirectory(), networkTxt);
+            string file = Path.Combine(Directory.GetCurrentDirectory(), args[0]);
 
             if (file == null)
                 Environment.Exit(1);
@@ -72,7 +79,7 @@ namespace ADRC_p2
 
             Graph graph = new Graph();
 
-            Console.WriteLine("Id da raiz?");
+            //Console.WriteLine("Id da raiz?");
             /*int id = Int32.Parse(Console.ReadLine());
 
             Node root = network[id];
