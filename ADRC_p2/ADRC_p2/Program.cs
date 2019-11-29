@@ -11,7 +11,7 @@ namespace ADRC_p2
 
         static void Main(string[] args)
         {
-            string networkTxt = "Network2.txt";
+            string networkTxt = "LargeNetwork.txt";
             // Criar o caminho do ficheiro de texto que representa a rede
             string file = Path.Combine(Directory.GetCurrentDirectory(), networkTxt);
 

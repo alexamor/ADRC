@@ -240,7 +240,7 @@ public class Graph
 
             if (commercialDist[i] != 0 || shortestDist[i] != 0)
             {
-                Console.WriteLine("probCOmmercial " + commercialDist[i]);
+                Console.WriteLine("probCOmmercial " + commercialDist[i] + "   i: " + i);
                 Console.WriteLine("c-" + probCommercial);
                 Console.WriteLine("s+" + probShortest);
             }

@@ -1,0 +1,109 @@
+Clients: 0,88146996
+Pairs: 0,11241299
+Providers: 0,006116994
+totalDist 1933668702
+probCOmmercial 211648   i: 1
+c-0,000109454115
+s+0,00012747271
+probCOmmercial 57973647   i: 2
+c-0,030090623
+s+0,03901411
+probCOmmercial 345018256   i: 3
+c-0,20851737
+s+0,35240415
+probCOmmercial 519623465   i: 4
+c-0,47724152
+s+0,8073008
+probCOmmercial 374823284   i: 5
+c-0,671082
+s+0,967853
+probCOmmercial 231276465   i: 6
+c-0,790687
+s+0,99440473
+probCOmmercial 140258128   i: 7
+c-0,86322176
+s+0,998584
+probCOmmercial 88618053   i: 8
+c-0,90905076
+s+0,99984664
+probCOmmercial 56639702   i: 9
+c-0,9383421
+s+0,9999931
+probCOmmercial 36358662   i: 10
+c-0,95714504
+s+0,99999994
+probCOmmercial 24237273   i: 11
+c-0,96967936
+s+1
+probCOmmercial 16773158   i: 12
+c-0,9783536
+s+1
+probCOmmercial 11090443   i: 13
+c-0,9840891
+s+1
+probCOmmercial 7459118   i: 14
+c-0,98794657
+s+1
+probCOmmercial 6085895   i: 15
+c-0,9910939
+s+1
+probCOmmercial 5916381   i: 16
+c-0,99415356
+s+1
+probCOmmercial 4268764   i: 17
+c-0,99636114
+s+1
+probCOmmercial 2532857   i: 18
+c-0,997671
+s+1
+probCOmmercial 1430168   i: 19
+c-0,99841064
+s+1
+probCOmmercial 886773   i: 20
+c-0,99886924
+s+1
+probCOmmercial 823259   i: 21
+c-0,999295
+s+1
+probCOmmercial 532817   i: 22
+c-0,99957055
+s+1
+probCOmmercial 306325   i: 23
+c-0,999729
+s+1
+probCOmmercial 206544   i: 24
+c-0,9998358
+s+1
+probCOmmercial 135606   i: 25
+c-0,99990594
+s+1
+probCOmmercial 92526   i: 26
+c-0,9999538
+s+1
+probCOmmercial 52339   i: 27
+c-0,99998087
+s+1
+probCOmmercial 20091   i: 28
+c-0,99999124
+s+1
+probCOmmercial 7580   i: 29
+c-0,9999952
+s+1
+probCOmmercial 6417   i: 30
+c-0,9999985
+s+1
+probCOmmercial 2455   i: 31
+c-0,99999976
+s+1
+probCOmmercial 444   i: 32
+c-1
+s+1
+probCOmmercial 121   i: 33
+c-1,0000001
+s+1
+probCOmmercial 30   i: 34
+c-1,0000001
+s+1
+probCOmmercial 8   i: 35
+c-1,0000001
+s+1
